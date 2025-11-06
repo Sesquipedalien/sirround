@@ -22,6 +22,39 @@ function ensureWorkDir() {
 // Serve packaged HLS segments
 app.use('/hls', express.static(WORK));
 
+// Stream proxy to force inline playback and preserve seeking via Range
+app.get('/api/stream', async (req, res) => {
+  try {
+    const src = req.query.src;
+    if (!src || typeof src !== 'string') return res.status(400).json({ ok: false, error: 'missing src' });
+    const range = req.headers['range'];
+    const headers = {
+      'User-Agent': 'Mozilla/5.0 (AppleTV; U; CPU like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12H136 Safari/600.1.4',
+      'Referer': 'https://sirround.me',
+      'Origin': 'https://sirround.me',
+      ...(range ? { Range: range } : {}),
+      'Accept': '*/*',
+      'Accept-Encoding': 'identity',
+      'Connection': 'keep-alive',
+    };
+    const upstream = await fetch(src, { headers });
+    res.status(upstream.status);
+    const ct = upstream.headers.get('content-type') || 'application/octet-stream';
+    const cl = upstream.headers.get('content-length');
+    const cr = upstream.headers.get('content-range');
+    const ar = upstream.headers.get('accept-ranges');
+    res.setHeader('Content-Type', ct);
+    if (cl) res.setHeader('Content-Length', cl);
+    if (cr) res.setHeader('Content-Range', cr);
+    if (ar) res.setHeader('Accept-Ranges', ar);
+    res.setHeader('Content-Disposition', 'inline');
+    res.setHeader('Cache-Control', 'no-store');
+    if (upstream.body) upstream.body.pipe(res); else res.end();
+  } catch (e) {
+    res.status(500).json({ ok: false, error: 'stream-failed', message: String(e) });
+  }
+});
+
 // Package EC-3 audio HLS (copy EC-3 into fMP4 segments)
 // GET /api/hls/package-ec3?src=...
 app.get('/api/hls/package-ec3', async (req, res) => {
