@@ -19,6 +19,45 @@ function ensureWorkDir() {
   if (!fs.existsSync(WORK)) fs.mkdirSync(WORK, { recursive: true });
 }
 
+// Serve packaged HLS segments
+app.use('/hls', express.static(WORK));
+
+// Package EC-3 audio HLS (copy EC-3 into fMP4 segments)
+// GET /api/hls/package-ec3?src=...
+app.get('/api/hls/package-ec3', async (req, res) => {
+  try {
+    ensureWorkDir();
+    const input = resolveInput(req.query.src);
+    if (!input) return res.status(400).json({ ok: false, error: 'invalid src' });
+    const id = crypto.randomBytes(8).toString('hex');
+    const outDir = path.join(WORK, id);
+    await fsp.mkdir(outDir, { recursive: true });
+
+    const outPath = path.join(outDir, 'ec3.m3u8');
+    const args = [
+      '-y',
+      '-i', input,
+      '-map', 'a:0',
+      '-c:a', 'copy',
+      '-movflags', 'frag_keyframe+empty_moov+separate_moof+omit_tfhd_offset+isml',
+      '-f', 'hls',
+      '-hls_time', '4',
+      '-hls_list_size', '0',
+      '-hls_segment_type', 'fmp4',
+      '-master_pl_name', 'master.m3u8',
+      '-hls_segment_filename', path.join(outDir, 'ec3_%03d.m4s'),
+      outPath,
+    ];
+    await execFileAsync('ffmpeg', args);
+    const base = `${req.protocol}://${req.get('host')}`;
+    const baseUrl = `${base}/hls/${id}`;
+    res.json({ ok: true, id, hls: `${baseUrl}/ec3.m3u8`, master: `${baseUrl}/master.m3u8`, baseUrl });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: e?.message || 'package-ec3 failed' });
+  }
+});
+}
+
 function resolveInput(src) {
   if (!src) return null;
   if (/^https?:\/\//i.test(src)) return src;
@@ -73,6 +112,7 @@ function toTitle(r) {
     poster,
     backdrop,
     year,
+    mediaUrl: isWitcher ? 'https://sirround.me/Star%20Wars%20Thrawn%20Ascendancy%20Chaos%20Rising,%20Book%201%2000-02%20%5BAAC%202.0%5D%5B7.1.4%20DOLBY%20ATMOS%5D%40OFF_ec3.mkv' : undefined,
   };
 }
 async function tmdbFetch(path, query = {}) {
@@ -87,7 +127,7 @@ async function tmdbFetch(path, query = {}) {
 app.get('/api/tmdb/trending', async (req, res) => {
   try {
     const data = await tmdbFetch('/trending/all/week');
-    const items = (data.results || []).map(toTitle).filter(t => t.poster);
+    const items = (data.results || []).map(toTitle).filter(t => t.poster).filter((t, i, a) => a.findIndex(x => x.name === t.name) === i);
     res.set('Cache-Control', 'no-store');
     res.json({ ok: true, items });
   } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
@@ -95,7 +135,7 @@ app.get('/api/tmdb/trending', async (req, res) => {
 app.get('/api/tmdb/popular', async (req, res) => {
   try {
     const data = await tmdbFetch('/movie/popular', { page: 1 });
-    const items = (data.results || []).map(toTitle).filter(t => t.poster);
+    const items = (data.results || []).map(toTitle).filter(t => t.poster).filter((t, i, a) => a.findIndex(x => x.name === t.name) === i);
     res.set('Cache-Control', 'no-store');
     res.json({ ok: true, items });
   } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
@@ -103,7 +143,7 @@ app.get('/api/tmdb/popular', async (req, res) => {
 app.get('/api/tmdb/top', async (req, res) => {
   try {
     const data = await tmdbFetch('/movie/top_rated', { page: 1 });
-    const items = (data.results || []).map(toTitle).filter(t => t.poster);
+    const items = (data.results || []).map(toTitle).filter(t => t.poster).filter((t, i, a) => a.findIndex(x => x.name === t.name) === i);
     res.set('Cache-Control', 'no-store');
     res.json({ ok: true, items });
   } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
