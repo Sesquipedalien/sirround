@@ -48,16 +48,20 @@ function toTitle(r) {
   const titleText = (r.title || r.name || '').toLowerCase();
   const isDynamite = titleText.includes('house of dynamite');
   const isBDPSex = r.id === 10664136 || titleText.includes('sex and violence') || isDynamite;
+  const isWitcher = /witcher/.test(titleText);
   const defaultPoster = imageUrl(r.poster_path, 'w500');
   const defaultBackdrop = imageUrl(r.backdrop_path, 'original');
   const poster = isBDPSex
     ? '/boogiedownproduction_sexandviolence_7ur1.jpg'
+    : isWitcher
+    ? '/star wars-thrawn ascendancy-chaos risingb1.jpg'
     : r.id === 200875 || r.id === 106646
     ? '/Oppenheimer X minimalist cropped.jpg'
     : defaultPoster;
   const backdrop = isDynamite ? '' : defaultBackdrop;
   let name = r.title || r.name || 'Untitled';
   if (isBDPSex) name = 'Boogie Down Productions – Sex And Violence (1992)';
+  if (isWitcher) name = 'Star Wars: Thrawn Ascendancy: Chaos Rising, Book 1';
   if (name === 'IT: Welcome To Derry' || r.id === 200875 || r.id === 106646) name = 'Oppenheimer (2023) [7.1.4 DOLBY ATMOS]';
   if (name === 'Stranger Things') name = 'Stranger Things [7.1.4 DOLBY ATMOS]';
   const SUFFIX = ' [7.1.4 DOLBY ATMOS]';
@@ -65,7 +69,7 @@ function toTitle(r) {
   return {
     id: String(r.id),
     name,
-    overview: r.overview || '',
+    overview: isWitcher ? 'Beyond the edge of the galaxy lies the Unknown Regions: chaotic, uncharted, and near impassable, with hidden secrets and dangers in equal measure...' : (r.overview || ''),
     poster,
     backdrop,
     year,
@@ -84,6 +88,7 @@ app.get('/api/tmdb/trending', async (req, res) => {
   try {
     const data = await tmdbFetch('/trending/all/week');
     const items = (data.results || []).map(toTitle).filter(t => t.poster);
+    res.set('Cache-Control', 'no-store');
     res.json({ ok: true, items });
   } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
 });
@@ -91,6 +96,7 @@ app.get('/api/tmdb/popular', async (req, res) => {
   try {
     const data = await tmdbFetch('/movie/popular', { page: 1 });
     const items = (data.results || []).map(toTitle).filter(t => t.poster);
+    res.set('Cache-Control', 'no-store');
     res.json({ ok: true, items });
   } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
 });
@@ -98,6 +104,7 @@ app.get('/api/tmdb/top', async (req, res) => {
   try {
     const data = await tmdbFetch('/movie/top_rated', { page: 1 });
     const items = (data.results || []).map(toTitle).filter(t => t.poster);
+    res.set('Cache-Control', 'no-store');
     res.json({ ok: true, items });
   } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
 });
