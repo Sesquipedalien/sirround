@@ -38,6 +38,70 @@ app.get('/api/health', (req, res) => {
   res.json({ ok: true, uptime: process.uptime() });
 });
 
+// TMDB proxy (server-side token)
+const TMDB_API_BASE = 'https://api.themoviedb.org/3';
+const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p';
+function imageUrl(path, size = 'w500') { if (!path) return ''; return `${TMDB_IMAGE_BASE}/${size}${path}`; }
+function toTitle(r) {
+  const date = r.release_date || r.first_air_date || '';
+  const year = date ? Number(date.slice(0, 4)) : 0;
+  const titleText = (r.title || r.name || '').toLowerCase();
+  const isDynamite = titleText.includes('house of dynamite');
+  const isBDPSex = r.id === 10664136 || titleText.includes('sex and violence') || isDynamite;
+  const defaultPoster = imageUrl(r.poster_path, 'w500');
+  const defaultBackdrop = imageUrl(r.backdrop_path, 'original');
+  const poster = isBDPSex
+    ? '/boogiedownproduction_sexandviolence_7ur1.jpg'
+    : r.id === 200875 || r.id === 106646
+    ? '/Oppenheimer X minimalist cropped.jpg'
+    : defaultPoster;
+  const backdrop = isDynamite ? '' : defaultBackdrop;
+  let name = r.title || r.name || 'Untitled';
+  if (isBDPSex) name = 'Boogie Down Productions – Sex And Violence (1992)';
+  if (name === 'IT: Welcome To Derry' || r.id === 200875 || r.id === 106646) name = 'Oppenheimer (2023) [7.1.4 DOLBY ATMOS]';
+  if (name === 'Stranger Things') name = 'Stranger Things [7.1.4 DOLBY ATMOS]';
+  const SUFFIX = ' [7.1.4 DOLBY ATMOS]';
+  if (!name.endsWith(SUFFIX)) name = name + SUFFIX;
+  return {
+    id: String(r.id),
+    name,
+    overview: r.overview || '',
+    poster,
+    backdrop,
+    year,
+  };
+}
+async function tmdbFetch(path, query = {}) {
+  const token = process.env.TMDB_ACCESS_TOKEN;
+  if (!token) throw new Error('Missing TMDB_ACCESS_TOKEN');
+  const params = new URLSearchParams({ language: 'en-US', ...Object.fromEntries(Object.entries(query).map(([k,v]) => [k, String(v)])) });
+  const url = `${TMDB_API_BASE}${path}?${params.toString()}`;
+  const r = await fetch(url, { headers: { Authorization: `Bearer ${token}`, accept: 'application/json' } });
+  if (!r.ok) throw new Error(`TMDB ${r.status}`);
+  return r.json();
+}
+app.get('/api/tmdb/trending', async (req, res) => {
+  try {
+    const data = await tmdbFetch('/trending/all/week');
+    const items = (data.results || []).map(toTitle).filter(t => t.poster);
+    res.json({ ok: true, items });
+  } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
+});
+app.get('/api/tmdb/popular', async (req, res) => {
+  try {
+    const data = await tmdbFetch('/movie/popular', { page: 1 });
+    const items = (data.results || []).map(toTitle).filter(t => t.poster);
+    res.json({ ok: true, items });
+  } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
+});
+app.get('/api/tmdb/top', async (req, res) => {
+  try {
+    const data = await tmdbFetch('/movie/top_rated', { page: 1 });
+    const items = (data.results || []).map(toTitle).filter(t => t.poster);
+    res.json({ ok: true, items });
+  } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
+});
+
 // Probe media with ffprobe
 app.get('/api/media/probe', async (req, res) => {
   try {
