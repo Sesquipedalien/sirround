@@ -36,6 +36,9 @@ app.get('/api/hls/package-ec3', async (req, res) => {
     const outPath = path.join(outDir, 'ec3.m3u8');
     const args = [
       '-y',
+      // Spoof headers so origin allows server-side fetch
+      '-user_agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
+      '-headers', 'Referer: https://sirround.me',
       '-i', input,
       '-map', 'a:0',
       '-c:a', 'copy',
@@ -53,10 +56,10 @@ app.get('/api/hls/package-ec3', async (req, res) => {
     const baseUrl = `${base}/hls/${id}`;
     res.json({ ok: true, id, hls: `${baseUrl}/ec3.m3u8`, master: `${baseUrl}/master.m3u8`, baseUrl });
   } catch (e) {
-    res.status(500).json({ ok: false, error: e?.message || 'package-ec3 failed' });
+    const err = e || {};
+    res.status(500).json({ ok: false, error: err.message || 'package-ec3 failed', stderr: err.stderr || '', stdout: err.stdout || '' });
   }
 });
-}
 
 function resolveInput(src) {
   if (!src) return null;
@@ -97,7 +100,7 @@ function toTitle(r) {
     : r.id === 200875 || r.id === 106646
     ? '/Oppenheimer X minimalist cropped.jpg'
     : defaultPoster;
-  const backdrop = isDynamite ? '' : defaultBackdrop;
+  const backdrop = isWitcher ? '' : (isDynamite ? '' : defaultBackdrop);
   let name = r.title || r.name || 'Untitled';
   if (isBDPSex) name = 'Boogie Down Productions – Sex And Violence (1992)';
   if (isWitcher) name = 'Star Wars: Thrawn Ascendancy: Chaos Rising, Book 1';
@@ -112,7 +115,7 @@ function toTitle(r) {
     poster,
     backdrop,
     year,
-    mediaUrl: isWitcher ? 'https://sirround.me/Star%20Wars%20Thrawn%20Ascendancy%20Chaos%20Rising,%20Book%201%2000-02%20%5BAAC%202.0%5D%5B7.1.4%20DOLBY%20ATMOS%5D%40OFF_ec3.mkv' : undefined,
+    mediaUrl: isWitcher ? 'https://sirround.me/thrawn1-ec3.mkv' : undefined,
   };
 }
 async function tmdbFetch(path, query = {}) {
