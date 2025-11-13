@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tribal Productions Radio - Live Stream</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .player-card {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .album-art {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .now-playing {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .now-playing h2 {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .now-playing p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #fecaca;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .play-button {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 25px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .play-button:active {
+            transform: translateY(0);
+        }
+
+        .play-button:disabled {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #6b7280;
+        }
+
+        .status-dot.live {
+            background: #10b981;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .status-text {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Tribal Productions Radio</h1>
+            <p>Live Streaming</p>
+        </div>
+
+        <div class="player-card">
+            <div class="album-art">🎵</div>
+
+            <div class="now-playing">
+                <h2 id="title">Tribal Radio</h2>
+                <p id="subtitle">Press play to start</p>
+            </div>
+
+            <div class="error-message" id="error"></div>
+
+            <button class="play-button" id="playButton">
+                <span id="buttonIcon">▶</span>
+                <span id="buttonText">Play Live</span>
+            </button>
+
+            <div class="status">
+                <div class="status-dot" id="statusDot"></div>
+                <span class="status-text" id="statusText">Offline</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2024 Tribal Productions Radio Inc.</p>
+        </div>
+    </div>
+
+    <script>
+        const STREAM_URL = 'https://stream.tribalradio.com/live.mp3';
+        
+        let audio = null;
+        let isPlaying = false;
+        let isLoading = false;
+
+        const playButton = document.getElementById('playButton');
+        const buttonIcon = document.getElementById('buttonIcon');
+        const buttonText = document.getElementById('buttonText');
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const title = document.getElementById('title');
+        const subtitle = document.getElementById('subtitle');
+        const errorDiv = document.getElementById('error');
+
+        function showError(message) {
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 5000);
+        }
+
+        function updateUI(playing, loading) {
+            isPlaying = playing;
+            isLoading = loading;
+
+            if (loading) {
+                buttonIcon.innerHTML = '<div class="spinner"></div>';
+                buttonText.textContent = 'Connecting...';
+                playButton.disabled = true;
+            } else if (playing) {
+                buttonIcon.textContent = '⏸';
+                buttonText.textContent = 'Pause';
+                playButton.disabled = false;
+                statusDot.classList.add('live');
+                statusText.textContent = 'Live';
+                title.textContent = 'Now Playing';
+                subtitle.textContent = 'Live Stream';
+            } else {
+                buttonIcon.textContent = '▶';
+                buttonText.textContent = 'Play Live';
+                playButton.disabled = false;
+                statusDot.classList.remove('live');
+                statusText.textContent = 'Offline';
+                title.textContent = 'Tribal Radio';
+                subtitle.textContent = 'Press play to start';
+            }
+        }
+
+        async function togglePlay() {
+            if (isLoading) return;
+
+            if (isPlaying && audio) {
+                audio.pause();
+                updateUI(false, false);
+                return;
+            }
+
+            updateUI(false, true);
+
+            try {
+                if (!audio) {
+                    audio = new Audio();
+                    audio.crossOrigin = 'anonymous';
+                    
+                    audio.addEventListener('error', (e) => {
+                        console.error('Audio error:', e);
+                        showError('Unable to connect to stream');
+                        updateUI(false, false);
+                    });
+
+                    audio.addEventListener('ended', () => {
+                        updateUI(false, false);
+                    });
+                }
+
+                audio.src = STREAM_URL;
+                await audio.play();
+                updateUI(true, false);
+            } catch (error) {
+                console.error('Play error:', error);
+                showError('Unable to play stream. Please try again.');
+                updateUI(false, false);
+            }
+        }
+
+        playButton.addEventListener('click', togglePlay);
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (audio) {
+                audio.pause();
+                audio.src = '';
+            }
+        });
+    </script>
+</body>
+</html>
