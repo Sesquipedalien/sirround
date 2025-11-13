@@ -1,3 +1,8 @@
 [build]
   command = "pnpm build"
   publish = "out"
+  
+[[redirects]]
+  from = "/radio"
+  to = "/radio.html"
+  status = 200
