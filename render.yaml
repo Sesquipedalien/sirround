@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: spacebar-api
+    env: node
+    plan: free
+    region: oregon
+    buildCommand: 'npm install'
+    startCommand: 'node server.js'
+    autoDeploy: true
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+    # Install ffmpeg via apt
+    buildFilter:
+      paths:
+        - package.json
+        - server.js
+        - render.yaml
+        - apt.txt
