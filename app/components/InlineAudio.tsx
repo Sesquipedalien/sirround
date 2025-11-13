@@ -47,16 +47,19 @@ export default function InlineAudio({ src, apiBase = process.env.NEXT_PUBLIC_API
         const hls = new Hls({ enableWorker: true, lowLatencyMode: false });
         hls.loadSource(m3u8);
         hls.attachMedia(audio);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          if (autoplay) audio.play?.().catch?.(() => {});
+        });
+        return () => {
+          hls.destroy();
+        };
+      }
     };
-    
-    media.addEventListener('canplay', handleCanPlay);
-    media.addEventListener('error', handleError);
-    
+    import("hls.js").then((mod) => useHls(mod.default));
     return () => {
-      media.removeEventListener('canplay', handleCanPlay);
-      media.removeEventListener('error', handleError);
+      destroyed = true;
     };
-  }, [src, autoplay]);
+  }, [m3u8, autoplay]);
 
   if (error) {
     return (
@@ -68,11 +71,10 @@ export default function InlineAudio({ src, apiBase = process.env.NEXT_PUBLIC_API
 
   return (
     <div className="w-full rounded border border-zinc-800 bg-zinc-900 p-4">
-      <video
-        ref={mediaRef}
+      <audio
+        ref={audioRef}
         controls
         className="w-full"
-        style={{ maxHeight: '80px' }}
       />
     </div>
   );
