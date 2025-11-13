@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[87275,["/_next/static/chunks/114132708cc9f212.js","/_next/static/chunks/18b94324bb419455.js"],"OutletBoundary"]
+3:"$Sreact.suspense"
+0:{"buildId":"VfTbM05QyB-yvvzIEVwcR","rsc":["$","$1","c",{"children":[["$","section",null,{"className":"prose prose-invert max-w-3xl","children":[["$","h1",null,{"children":"Contact"}],["$","p",null,{"children":["Email: ",["$","a",null,{"href":"mailto:hello@sirround.me","children":"hello@sirround.me"}]]}],["$","p",null,{"children":"Tell us about your project and goals. We typically reply within 1–2 business days."}]]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"loading":null,"isPartial":false}
+4:null

@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+
+Host: https://sirround.me
+Sitemap: https://sirround.me/sitemap.xml

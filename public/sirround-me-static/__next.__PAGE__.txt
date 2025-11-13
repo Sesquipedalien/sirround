@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[87275,["/_next/static/chunks/114132708cc9f212.js","/_next/static/chunks/18b94324bb419455.js"],"OutletBoundary"]
+3:"$Sreact.suspense"
+0:{"buildId":"VfTbM05QyB-yvvzIEVwcR","rsc":["$","$1","c",{"children":[["$","section",null,{"className":"mx-auto max-w-3xl","children":[["$","h1",null,{"className":"text-4xl font-semibold tracking-tight","children":"Spatial audio for the web"}],["$","p",null,{"className":"mt-4 text-lg text-zinc-300","children":"Sirround crafts immersive, ambisonic-driven experiences: AmbiX & FuMa decoding, WebAudio pipelines, and modern delivery with HLS — all with thoughtful UX and performance."}]]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"loading":null,"isPartial":false}
+4:null

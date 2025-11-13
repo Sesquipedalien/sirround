@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[87275,["/_next/static/chunks/114132708cc9f212.js","/_next/static/chunks/18b94324bb419455.js"],"OutletBoundary"]
+3:"$Sreact.suspense"
+0:{"buildId":"VfTbM05QyB-yvvzIEVwcR","rsc":["$","$1","c",{"children":[["$","section",null,{"className":"prose prose-invert max-w-3xl","children":[["$","h1",null,{"children":"Audio Demos"}],["$","p",null,{"children":"Explore spatial audio examples. Coming soon: interactive demos featuring ambisonic decoding (AmbiX & FuMa) and visualization."}],["$","ul",null,{"children":[["$","li",null,{"children":"Stereo demo (MP3/AAC)"}],["$","li",null,{"children":"Ambisonic FOA (AmbiX) demo"}],["$","li",null,{"children":"Ambisonic FOA (FuMa) demo"}]]}]]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"loading":null,"isPartial":false}
+4:null

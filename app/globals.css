@@ -24,3 +24,9 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Ensure site logo is never color-inverted */
+img.logo {
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
