@@ -126,7 +126,53 @@ export default function Home() {
         <div className="h-40" />
       )}
 
-      {/* Rows */}
+      {/* Audio Tracks Section */}
+      <div className="space-y-10 py-8">
+        <section className="space-y-3">
+          <h2 className="px-6 text-lg font-semibold md:text-xl">Audio Demos</h2>
+          <div className="no-scrollbar flex gap-3 overflow-x-auto px-6 pb-2">
+            {/* Tahoe Track */}
+            <div className="flex w-[200px] flex-shrink-0 flex-col items-stretch md:w-[250px]">
+              <button
+                className="relative h-[200px] w-full overflow-hidden rounded border border-zinc-800 bg-zinc-900 hover:border-zinc-600 md:h-[250px] flex flex-col items-center justify-center gap-3 p-4"
+                onClick={() => {
+                  setPlayerSrc('https://sirround.me/uploads/1762896426301-TAHOE-MEEKS-BAY-RESORT-16-2025-2.0-AMBISONIC.mp4');
+                }}
+                aria-label="Play Tahoe - Meeks Bay Resort"
+                data-focusable="true"
+                tabIndex={0}
+              >
+                <div className="text-6xl">🎵</div>
+                <div className="text-center">
+                  <div className="text-sm font-semibold text-white">Tahoe - Meeks Bay Resort #16</div>
+                  <div className="text-xs text-zinc-400 mt-1">EC-3 Atmos 9.1.6</div>
+                </div>
+              </button>
+            </div>
+
+            {/* Crew Clockwise Track */}
+            <div className="flex w-[200px] flex-shrink-0 flex-col items-stretch md:w-[250px]">
+              <button
+                className="relative h-[200px] w-full overflow-hidden rounded border border-zinc-800 bg-zinc-900 hover:border-zinc-600 md:h-[250px] flex flex-col items-center justify-center gap-3 p-4"
+                onClick={() => {
+                  setPlayerSrc('https://sirround.me/uploads/Crew Clockwise - Progress.mp3');
+                }}
+                aria-label="Play Crew Clockwise - Progress"
+                data-focusable="true"
+                tabIndex={0}
+              >
+                <div className="text-6xl">🎵</div>
+                <div className="text-center">
+                  <div className="text-sm font-semibold text-white">Crew Clockwise - Progress</div>
+                  <div className="text-xs text-zinc-400 mt-1">MP3</div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* Video Rows */}
       <div className="space-y-10 py-8">
         {rows.map((row) => (
           <section key={row.title} className="space-y-3">
