@@ -37,18 +37,19 @@
     },
     {
       "id": "track-004",
-      "title": "Progress",
-      "artist": "Crew Clockwise",
-      "album": "",
-      "fileUrl": "https://sirround.me/Crew Clockwise - Progress.mp3",
+      "title": "Blue Breakbeats",
+      "artist": "Grant Green",
+      "album": "APE 2.0",
+      "fileUrl": "https://sirround.me/Grant Green - Blue Breakbeats [APE 2.0][AMBISONIC][7.1.4 RØDE1.0].mp4",
       "coverUrl": "",
-      "format": "MP3 • Stereo",
+      "format": "1080p • Ambisonic 7.1.4",
       "duration": 0,
-      "isVideo": false,
-      "category": "audio",
+      "isVideo": true,
+      "category": "video",
       "tags": [
-        "music",
-        "audio"
+        "ambisonic",
+        "spatial",
+        "music"
       ]
     }
   ]
