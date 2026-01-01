@@ -1,8 +1,14 @@
 [build]
-  command = "pnpm install && pnpm build"
+  command = "pnpm install && pnpm build && cp public/media-library.json out/media-library.json"
   publish = "out"
   
 [[redirects]]
   from = "/radio"
   to = "/radio.html"
   status = 200
+
+[[redirects]]
+  from = "/media-library.json"
+  to = "/media-library.json"
+  status = 200
+  force = false
