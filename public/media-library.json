@@ -34,22 +34,6 @@
         "live",
         "concert"
       ]
-    },
-    {
-      "id": "track-004",
-      "title": "Nisemonogatari Episode 10",
-      "artist": "Liuyun",
-      "album": "Nisemonogatari",
-      "fileUrl": "https://sirround.me/uploads/Nisemonogatari-10-1080P.mp4",
-      "coverUrl": "",
-      "format": "1080P • X264 AAC",
-      "duration": 0,
-      "isVideo": true,
-      "category": "video",
-      "tags": [
-        "anime",
-        "video"
-      ]
     }
   ]
 }
