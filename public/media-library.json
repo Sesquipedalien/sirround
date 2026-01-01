@@ -34,23 +34,6 @@
         "live",
         "concert"
       ]
-    },
-    {
-      "id": "track-004",
-      "title": "Blue Breakbeats",
-      "artist": "Grant Green",
-      "album": "APE 2.0",
-      "fileUrl": "https://sirround.me/Grant Green - Blue Breakbeats [APE 2.0][AMBISONIC][7.1.4 RØDE1.0].mp4",
-      "coverUrl": "",
-      "format": "1080p • Ambisonic 7.1.4",
-      "duration": 0,
-      "isVideo": true,
-      "category": "video",
-      "tags": [
-        "ambisonic",
-        "spatial",
-        "music"
-      ]
     }
   ]
 }
