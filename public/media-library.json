@@ -34,6 +34,21 @@
         "live",
         "concert"
       ]
+    },
+    {
+      "id": "track-004",
+      "title": "Muslima hero blows out zionist candles",
+      "artist": "",
+      "album": "",
+      "fileUrl": "https://raw.githubusercontent.com/Sesquipedalien/sirround/main/public/Muslima-hero-blows-out-zionist-candles.mp4",
+      "coverUrl": "",
+      "format": "MP4 • Video",
+      "duration": 0,
+      "isVideo": true,
+      "category": "video",
+      "tags": [
+        "video"
+      ]
     }
   ]
 }
