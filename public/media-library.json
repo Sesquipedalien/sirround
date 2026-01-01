@@ -34,22 +34,6 @@
         "live",
         "concert"
       ]
-    },
-    {
-      "id": "track-004",
-      "title": "Rapt",
-      "artist": "Francis Lai",
-      "album": "",
-      "fileUrl": "https://raw.githubusercontent.com/Sesquipedalien/sirround/main/public/Francis-Lai-Rapt.wav",
-      "coverUrl": "",
-      "format": "WAV • Stereo",
-      "duration": 0,
-      "isVideo": false,
-      "category": "audio",
-      "tags": [
-        "music",
-        "audio"
-      ]
     }
   ]
 }
