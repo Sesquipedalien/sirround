@@ -37,16 +37,17 @@
     },
     {
       "id": "track-004",
-      "title": "Muslima hero blows out zionist candles",
-      "artist": "",
-      "album": "",
-      "fileUrl": "https://raw.githubusercontent.com/Sesquipedalien/sirround/main/public/Muslima-hero-blows-out-zionist-candles.mp4",
+      "title": "Nisemonogatari Episode 10",
+      "artist": "Liuyun",
+      "album": "Nisemonogatari",
+      "fileUrl": "https://sirround.me/Nisemonogatari-10-1080P.mp4",
       "coverUrl": "",
-      "format": "MP4 • Video",
+      "format": "1080P • X264 AAC",
       "duration": 0,
       "isVideo": true,
       "category": "video",
       "tags": [
+        "anime",
         "video"
       ]
     }
