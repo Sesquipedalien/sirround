@@ -34,6 +34,22 @@
         "live",
         "concert"
       ]
+    },
+    {
+      "id": "track-004",
+      "title": "Rapt",
+      "artist": "Francis Lai",
+      "album": "",
+      "fileUrl": "https://sirround.me/03. Francis Lai - Rapt.wav",
+      "coverUrl": "",
+      "format": "WAV • Stereo",
+      "duration": 0,
+      "isVideo": false,
+      "category": "audio",
+      "tags": [
+        "music",
+        "audio"
+      ]
     }
   ]
 }
