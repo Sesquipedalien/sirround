@@ -18,22 +18,6 @@
         "nature",
         "4k"
       ]
-    },
-    {
-      "id": "track-003",
-      "title": "Ghetto Chilldren (2-3-17) Reunion Show (Through The Eye Of Art)",
-      "artist": "Through The Eye Of Art",
-      "album": "",
-      "fileUrl": "https://raw.githubusercontent.com/Sesquipedalien/sirround/main/public/Ghetto Chilldren (2-3-17) Reunion Show (Through The Eye Of Art).mp4",
-      "coverUrl": "",
-      "format": "1080p \u2022 AAC 256 kbps \u2022 Stereo",
-      "duration": 0,
-      "isVideo": true,
-      "category": "video",
-      "tags": [
-        "live",
-        "concert"
-      ]
     }
   ]
 }
