@@ -34,22 +34,6 @@
         "live",
         "concert"
       ]
-    },
-    {
-      "id": "track-004",
-      "title": "14 Year Old Stephen Curry",
-      "artist": "",
-      "album": "",
-      "fileUrl": "https://raw.githubusercontent.com/Sesquipedalien/sirround/main/public/14-year-old-Stephen-Curry.mp4",
-      "coverUrl": "",
-      "format": "MP4 • Video",
-      "duration": 0,
-      "isVideo": true,
-      "category": "video",
-      "tags": [
-        "sports",
-        "basketball"
-      ]
     }
   ]
 }
